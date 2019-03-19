@@ -31,7 +31,7 @@ public class Punto implements Comparable<Punto> {
 	//entonces los segmentos deben estar ordenados de derecha a izquierda, es decir si ordenan los puntos por su coordenada
 	//y entonces los segmentos por su coordenada x y viceversa.
 	public int compareTo(Punto p) {
-		return this.y - p.y;//se organizan de arriba a abajo
+		return (int)(this.y - p.y);//se organizan de arriba a abajo
 	}
 
 	//Metodo necesario para determinar el sentido de 3 puntos. necesario para saber si 2 segmentos se intersectan.

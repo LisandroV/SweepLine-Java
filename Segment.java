@@ -2,7 +2,7 @@ import java.util.*;
 import java.lang.*;
 
 public class Segment extends AVLNode<Segment> {
-	
+
 	Punto begin; //Punto que representara el Punto de entrada, es decir el menor de los 2 puntos
 	Punto end; //Punto que representa el Punto de salida, el mayor de los 2 puntos
 
@@ -12,37 +12,37 @@ public class Segment extends AVLNode<Segment> {
 	}
 
 	public boolean equals(Segment s) {
-		return this.begin.x == s.begin.x && 
+		return this.begin.x == s.begin.x &&
 				this.begin.y == s.begin.y &&
 				this.end.x == s.end.x &&
-				this.end.y == s.end.y;	
+				this.end.y == s.end.y;
 	}
 
 	//Metodo necesario para mantener bien ordenado el AVLTree con los segmentos, decidir el orden
-	//que quieren darle a sus segmentos, es decir leer de arriba hacia abajo o de derecha a izquierda.  
+	//que quieren darle a sus segmentos, es decir leer de arriba hacia abajo o de derecha a izquierda.
 	@Override
 	public int compareTo(Segment s) {
-		return 0;	
-	} 
+		return (int)(this.begin.x - s.begin.x);	
+	}
 
 	//Metodo que ayudara a saber si existe una interseccion entre 2 segmentos.
 	public boolean intersection(Segment s) {
 		return true;
-	}	
+	}
 
 	//Metodo que regresa el punto de interseccion entre 2 Puntos.
-	public Punto getIntersection(Segment s) { 		
+	public Punto getIntersection(Segment s) {
 		return null;
 	}
 
 	//Metodo que ayuda a la representacion visual del punto en terminal.
-	//Modificarlo si quieren, esta sensillo pero me sirvio para saber como voy  
+	//Modificarlo si quieren, esta sensillo pero me sirvio para saber como voy
 	public void imprime() {
 		System.out.print("(" + this.begin.x + "," + this.begin.y + ")-(" + this.end.x + "," + this.end.y + ")");
 	}
 
-	//Metodo para imprimir el arbol en terminal de manera descente. 
-	//Este igual modificarlo si quieren, Esta bastante bueno para saber como van con su barrido y su orden. 
+	//Metodo para imprimir el arbol en terminal de manera descente.
+	//Este igual modificarlo si quieren, Esta bastante bueno para saber como van con su barrido y su orden.
 	public static void print(AVLNode root) {
         if(root == null) {
             System.out.println("(VACIO)");
@@ -96,4 +96,3 @@ public class Segment extends AVLNode<Segment> {
     }
 
 }
-

@@ -534,7 +534,7 @@ public class AVLTree {
              return this.getMax(node.left);
          //SEGUNDO CASO: está hacia arriba el antecesor
          AVLNode p = node.getParent();
-         while(p != NULL && node == p.left){
+         while(p != null && node == p.left){
             node = p;
             p = p.getParent();
          }
@@ -548,7 +548,7 @@ public class AVLTree {
             return this.getMin(node.right);
         //SEGUNDO CASO: está hacia arriba el sucesor
         AVLNode p = node.getParent();
-        while(p != NULL && node == p.right){
+        while(p != null && node == p.right){
            node = p;
            p = p.getParent();
         }
@@ -560,6 +560,7 @@ public class AVLTree {
             n = n.right;
         }
         return n;
+    }
 
     private AVLNode getMin(AVLNode n){
         while (n.left != null) {
