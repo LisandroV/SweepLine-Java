@@ -7,14 +7,14 @@ import java.util.Stack;
  */
 public class AVLTree {
     private AVLNode root;
-    
+
     /**
-     * Constructor of the AVLTree class 
+     * Constructor of the AVLTree class
      */
     public AVLTree() {
         this.root = null; //root of the tree
     }
-    
+
     /**
      * Method for search of particular node in the tree
      * @param node - wanted node
@@ -22,12 +22,12 @@ public class AVLTree {
      */
     public AVLNode search(AVLNode node) {
         AVLNode activeNode = this.root;
-        
+
         //if the root is null there is no tree to search
         if (this.root == null) {
             return null;
         }
-        
+
         while (activeNode != null) {
             if (node.compareTo(activeNode) == 0) {
                 //wanted node found
@@ -40,7 +40,7 @@ public class AVLTree {
         }
         return null;
     }
-    
+
     /**
      * Insertion of the node to the tree
      * @param node - node to be inserted
@@ -53,7 +53,7 @@ public class AVLTree {
             return true;
         } else {
             AVLNode activeNode = this.root;
-            
+
             while (true) {
                 if (node.compareTo(activeNode) == 0) {
                     return false; //node alredy exists in the tree
@@ -62,10 +62,10 @@ public class AVLTree {
                     if (activeNode.getRight() == null) {
                         activeNode.setRight(node);
                         node.setParent(activeNode);
-                        
+
                         //reset node heights, detect rotation and get next node
                         this.resetHeightDetectRotation(node);
-                        
+
                         return true;
                     } else {
                         activeNode = activeNode.getRight();
@@ -75,10 +75,10 @@ public class AVLTree {
                     if (activeNode.getLeft() == null) {
                         activeNode.setLeft(node);
                         node.setParent(activeNode);
-                        
+
                         //reset node heights, detect rotation and get next node
                         this.resetHeightDetectRotation(node);
-                        
+
                         return true;
                     } else {
                         activeNode = activeNode.getLeft();
@@ -87,16 +87,16 @@ public class AVLTree {
             }
         }
     }
-    
+
     /**
      * Deletion of the node from the tree
      * @param node - node to be deleted
-     * @return true - if the node was deleted, false - if the node was not deleted or error occurs 
+     * @return true - if the node was deleted, false - if the node was not deleted or error occurs
      */
     public boolean delete(AVLNode node) {
         AVLNode nodeToRemove = this.search(node); //find out if deleting node is present in the tree
         AVLNode nodeToRemoveParent; //parent of the deleting node
-        
+
         if (nodeToRemove != null) {
             //if deleting node is leaf = does not have any ancestors
             if (nodeToRemove.getLeft() == null && nodeToRemove.getRight() == null) {
@@ -168,14 +168,14 @@ public class AVLTree {
                 //find substitute for deleting node
                 AVLNode substitute = this.getSubstitute(nodeToRemove);
                 AVLNode tempNode;
-                
+
                 //if deleting node is parent of the substitute node
                 if (nodeToRemove == substitute.getParent()) {
                     tempNode = substitute;
                 } else {
                     tempNode = substitute.getParent();
                 }
-                
+
                 //according to the substitute node is left or right son the references are set
                 if (substitute.getParent().getLeft() == substitute) {
                     if (substitute.getRight() != null) {
@@ -194,7 +194,7 @@ public class AVLTree {
                     }
                     substitute.setParent(null);
                 }
-                
+
                 //if parent of the deleting node is not root
                 if (nodeToRemoveParent != null) {
                     substitute.setParent(nodeToRemoveParent); //set new parent to the substitute node
@@ -208,7 +208,7 @@ public class AVLTree {
                     //else substitute becomes new root
                     this.root = substitute;
                 }
-                
+
                 //if deleting node has left son
                 if (nodeToRemove.getLeft() != null) {
                     substitute.setLeft(nodeToRemove.getLeft());
@@ -219,10 +219,10 @@ public class AVLTree {
                     substitute.setRight(nodeToRemove.getRight());
                     nodeToRemove.getRight().setParent(substitute);
                 }
-                
+
                 //reset node heights, detect rotation and get next node
                 this.resetHeightDetectRotation(tempNode);
-                
+
                 //standalone deletion of the node
                 nodeToRemove.setParent(null);
                 nodeToRemove.setLeft(null);
@@ -234,7 +234,7 @@ public class AVLTree {
         }
         return true;
     }
-    
+
     /**
      * Method for rotation detection
      * If any rotation needs to be done it will be performed
@@ -264,7 +264,7 @@ public class AVLTree {
             }
         }
     }
-    
+
     /**
      * Method for setting or resetting heights and detecting possible rotations
      * @param node - node on which heights are set and rotations are detected
@@ -280,15 +280,15 @@ public class AVLTree {
             node = node.getParent();
         }
     }
-    
+
     /**
      * Left rotation method on the given node
      * a                  b
      *  \               /   \
-     *    b     =>     a     c   
+     *    b     =>     a     c
      *     \
      *      c
-     * 
+     *
      * @param node - node on which rotation is performed
      */
     private void leftRotation(AVLNode node) {
@@ -298,10 +298,10 @@ public class AVLTree {
         if (parentNode == null) {
             rightNode.setParent(null);
             this.root = rightNode;
-        } else if (parentNode.getRight() == node) {   
+        } else if (parentNode.getRight() == node) {
             //rotating node is right son
             parentNode.setRight(rightNode);
-        } else {                          
+        } else {
             //rotating node is left son
             parentNode.setLeft(rightNode);
         }
@@ -309,12 +309,12 @@ public class AVLTree {
         rightNode.setParent(node.getParent());
         //rotating node becomes left son of the rightNode node
         node.setParent(rightNode);
-        
+
         //if right son of the rotating node does not have left son
         if (rightNode.getLeft() == null) {
             //setting right son of the rotating node to null
             node.setRight(null);
-            //and set this node as left son of the right son of the rotating node 
+            //and set this node as left son of the right son of the rotating node
             rightNode.setLeft(node);
         } else {
             rightNode.getLeft().setParent(node);
@@ -325,15 +325,15 @@ public class AVLTree {
         node.setNodeHeights();
         node.getParent().setNodeHeights();
     }
-    
+
     /**
      * Right rotation method on the given node
      *      a                b
      *     /               /   \
-     *    b        =>     a     c 
+     *    b        =>     a     c
      *   /
      *  c
-     * 
+     *
      * @param node - node on which rotation is performed
      */
     private void rightRotation(AVLNode node) {
@@ -343,10 +343,10 @@ public class AVLTree {
             //if parent of the rotating node is null then the rotating node is root
             leftNode.setParent(null);
             this.root = leftNode;
-        } else if (parentNode.getLeft() == node) {   
+        } else if (parentNode.getLeft() == node) {
             //rotating node is right son
             parentNode.setLeft(leftNode);
-        } else {                          
+        } else {
             //rotating node is left son
             parentNode.setRight(leftNode);
         }
@@ -354,12 +354,12 @@ public class AVLTree {
         leftNode.setParent(node.getParent());
         //rotating node becomes right son of the leftNode node
         node.setParent(leftNode);
-        
+
         //if left son of the rotating node does not have right son
         if (leftNode.getRight() == null) {
             //setting left son of the rotating node to null
             node.setLeft(null);
-            //and set this node as right son of the left son of the rotating node 
+            //and set this node as right son of the left son of the rotating node
             leftNode.setRight(node);
         } else {
             leftNode.getRight().setParent(node);
@@ -370,15 +370,15 @@ public class AVLTree {
         node.setNodeHeights();
         node.getParent().setNodeHeights();
     }
-    
+
     /**
      * Left-Right rotation method on the given node
      *    c            c
      *   /            /
-     *  a     =>     b     =>     b 
+     *  a     =>     b     =>     b
      *   \          /           /   \
      *    b        a           a     c
-     * 
+     *
      * @param node - node on which rotation is performed
      */
     private void leftRightRotation(AVLNode node) {
@@ -387,7 +387,7 @@ public class AVLTree {
         //right rotation on the rotating node
         this.rightRotation(node);
     }
-    
+
     /**
      * Right-Left rotation method on the given node
      * a           a
@@ -395,7 +395,7 @@ public class AVLTree {
      *   c     =>    b    =>     b
      *  /             \        /   \
      * b               c      a     c
-     * 
+     *
      * @param node - node on which rotation is performed
      */
     private void rightLeftRotation(AVLNode node) {
@@ -404,11 +404,11 @@ public class AVLTree {
         //left rotation on the rotating node
         this.leftRotation(node);
     }
-    
+
     public AVLNode getRoot() {
         return this.root;
     }
-    
+
     /**
      * Method to find substitute node for deleted node
      * We are looking for leftmost node from the right subtree or rightmost node from the left subtree
@@ -444,7 +444,7 @@ public class AVLTree {
             return tempNode;
         }
     }
-    
+
     /**
      * Inorder traversal from given node
      * @param node - node from which traversal begins
@@ -474,10 +474,10 @@ public class AVLTree {
                 }
             }
         }
-        
+
         return list;
     }
-    
+
     /**
      * Levelorder traversal from given node
      * @param node - node from which traversal begins
@@ -486,11 +486,11 @@ public class AVLTree {
     public LinkedList levelorder(AVLNode node) {
         LinkedList<AVLNode> levelorder = new LinkedList<>();
         LinkedList<AVLNode> list = new LinkedList<>();
-        
+
         if (node != null) {
             levelorder.add(node);
         }
-        
+
         while (!levelorder.isEmpty()) {
             AVLNode next = levelorder.remove();
             list.add(next);
@@ -502,10 +502,10 @@ public class AVLTree {
                 levelorder.add(next.getRight());
             }
         }
-        
+
         return list;
     }
-    
+
     /**
      * Method that counts number of nodes in tree
      * @param root - root node
@@ -519,22 +519,53 @@ public class AVLTree {
         }
     }
 
-   /* 
+   /*
     -----------------------------------------------------------------------------------------------------------------------
 
-                                        SECCION A IMPLEMENTAR 
-   
+                                        SECCION A IMPLEMENTAR
+
     -----------------------------------------------------------------------------------------------------------------------
    */
 
-    //Metodo que regresa el vecino izquierda de un nodo. 
+    //Metodo que regresa el vecino izquierdo de un nodo.
     public AVLNode leftNeighbour(AVLNode node) {
-        return null;
+        //PRIMER CASO: Nodo con hijo izquierdo
+         if(node.left != null)//se busca hacia abajo
+             return this.getMax(node.left);
+         //SEGUNDO CASO: está hacia arriba el antecesor
+         AVLNode p = node.getParent();
+         while(p != NULL && node == p.left){
+            node = p;
+            p = p.getParent();
+         }
+         return p;
     }
 
     //Metodo que regresa el vecino derecho de un nodo.
     public AVLNode rightNeighbour(AVLNode node) {
-       return null;
+       //PRIMER CASO: Nodo con hijo derecho
+        if(node.right != null)//se busca hacia abajo
+            return this.getMin(node.right);
+        //SEGUNDO CASO: está hacia arriba el sucesor
+        AVLNode p = node.getParent();
+        while(p != NULL && node == p.right){
+           node = p;
+           p = p.getParent();
+        }
+        return p;
+    }
+
+    private AVLNode getMax(AVLNode n){
+        while (n.right != null) {
+            n = n.right;
+        }
+        return n;
+
+    private AVLNode getMin(AVLNode n){
+        while (n.left != null) {
+            n = n.left;
+        }
+        return n;
     }
 
 }
