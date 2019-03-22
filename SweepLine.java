@@ -5,7 +5,7 @@ public class SweepLine {
 
 
 	public static AVLTree state = new AVLTree(); //Linea de barrido.
-	public static TreeSet<Punto> intersection = new TreeSet<>(); //Es igual que un Set solo que mantiene ordenada la informacion.
+	public static TreeSet<Punto> intersectionSet = new TreeSet<>(); //Es igual que un Set solo que mantiene ordenada la informacion.
     public static PriorityQueue<Punto> eventos = new PriorityQueue<>();//cola de prioridades para los eventos
 
     //Metodo que implementa el algoritmo de SweepLinea
@@ -19,6 +19,7 @@ public class SweepLine {
 	}
 
     public static void addIntersection(Segment s1,Segment s2){//los segmentos deben ser pasados en orden
+        if(s1 == null || s2 == null) return;
         Punto intersection = s1.getIntersection(s2);
         if(intersection!=null){
             intersection.isIntersection = true;
@@ -29,7 +30,7 @@ public class SweepLine {
     }
 
     public static void eventHandler(Punto e){
-        if(!e.isIntersection) e.segment.imprime();
+        //if(!e.isIntersection) e.segment.imprime(); //para pruebas
         if(e.isFirst && !e.isIntersection){
             state.insert(e.segment);//se agrega segmento al arbol AVL
             AVLNode a = state.leftNeighbour(e.segment);
@@ -38,17 +39,21 @@ public class SweepLine {
             addIntersection(e.segment,(Segment)b);
         }
         else if(!e.isFirst && !e.isIntersection){//punto final del segmento
-            AVLNode c = state.leftNeighbour(e.segment);
-            AVLNode d = state.rightNeighbour(e.segment);            
-            addIntersection((Segment)c,e.segment);
-            addIntersection(e.segment,(Segment)d);
+            AVLNode a = state.leftNeighbour(e.segment);
+            AVLNode b = state.rightNeighbour(e.segment);
+            addIntersection((Segment)a,e.segment);
+            addIntersection(e.segment,(Segment)b);
             state.delete(e.segment);//se elimina segmento del arbol AVL
         }
         else if(e.isIntersection){
-
+            AVLNode a = state.leftNeighbour(e.s1);
+            AVLNode d = state.rightNeighbour(e.s2);
+            addIntersection((Segment)a, e.s1);
+            addIntersection(e.s2, (Segment)d);
+            intersectionSet.add(e);
         }
-        Segment.print(state.getRoot());//se imprime el arbol para hacer pruebas
-        System.out.println("-----------Termina-paso-de-Handler----------\n");
+        //Segment.print(state.getRoot());//se imprime el arbol para hacer pruebas
+        //System.out.println("-----------Termina-paso-de-Handler----------\n");
     }
 
 	public static void main(String[] args) {
@@ -74,20 +79,14 @@ public class SweepLine {
             q.segment = s;
             eventos.offer(p);
             eventos.offer(q);
-
         }
 
         sweepLine(eventos);
-        Segment.print(state.getRoot());
 
         System.out.println("Puntos de interseccion");
-        for(Punto p: intersection) {
+        for(Punto p: intersectionSet) {
         	p.imprime();
         	System.out.println();
         }
-
-        Segment a  = new Segment(new Punto(1,1),new Punto(5,5));
-        Segment b  = new Segment(new Punto(-2,6),new Punto(1,4));
-        a.getIntersection(b).imprime();
 	}
 }
