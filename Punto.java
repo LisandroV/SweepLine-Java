@@ -4,6 +4,9 @@ public class Punto implements Comparable<Punto> {
 	public double y;	//Coordenada y del punto
 	public boolean isFirst; // True si es el punto de entrada o False si es el de salida.
 	public Segment segment; //Segmento asociado al punto
+	public boolean isIntersection; // True si es interseccion
+	public Segment s1; //Segmento izquierdo de la interseccion
+	public Segment s2; //Segmento derecho de la interseccion
 
 
 	public Punto(double x, double y) {
@@ -11,6 +14,9 @@ public class Punto implements Comparable<Punto> {
 		this.y = y;
 		this.isFirst = true; //Valor por defecto pero se va a modificar cuando creemos su segmento asociado.
 		this.segment = null;
+        this.isIntersection = false;
+        this.s1 = null;
+        this.s2 = null;
 	}
 
 	public boolean equals(Punto p) {

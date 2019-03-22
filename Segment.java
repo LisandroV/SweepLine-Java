@@ -22,7 +22,9 @@ public class Segment extends AVLNode<Segment> {
 	//que quieren darle a sus segmentos, es decir leer de arriba hacia abajo o de derecha a izquierda.
 	@Override
 	public int compareTo(Segment s) {
-		return (int)(this.begin.x - s.begin.x);	
+		double dif_x = this.begin.x - s.begin.x;
+        if(dif_x != 0) return (int)dif_x;
+        return (int)(this.begin.y - s.begin.y);
 	}
 
 	//Metodo que ayudara a saber si existe una interseccion entre 2 segmentos.
@@ -32,7 +34,28 @@ public class Segment extends AVLNode<Segment> {
 
 	//Metodo que regresa el punto de interseccion entre 2 Puntos.
 	public Punto getIntersection(Segment s) {
-		return null;
+        // Line AB represented as a1x + b1y = c1
+        double a1 = this.end.y - this.begin.y;
+        double b1 = this.begin.x - this.end.x;
+        double c1 = a1*(this.begin.x) + b1*(this.begin.y);
+
+        // Line CD represented as a2x + b2y = c2
+        double a2 = s.end.y - s.begin.y;
+        double b2 = s.begin.x - s.end.x;
+        double c2 = a2*(s.begin.x) + b2*(s.begin.y);
+
+        double determinant = a1*b2 - a2*b1;
+
+        //if (determinant == 0){
+            // The lines are parallel. This is simplified
+            // by returning a pair of FLT_MAX
+            //return make_pair(FLT_MAX, FLT_MAX);
+        //}
+        //else{
+            double x = (b2*c1 - b1*c2)/determinant;
+            double y = (a1*c2 - a2*c1)/determinant;
+            return new Punto(x, y);
+        //}
 	}
 
 	//Metodo que ayuda a la representacion visual del punto en terminal.
