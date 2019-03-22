@@ -33,12 +33,16 @@ public class SweepLine {
         System.out.println();
         if(e.isFirst && !e.isIntersection){
             state.insert(e.segment);//se agrega segmento al arbol AVL
-            addIntersection(state.leftNeighbour(e.segment),e.segment);//se pasan los segmentos en orden
-            addIntersection(e.segment,state.rightNeighbour(e.segment));
+            AVLNode a = state.leftNeighbour(e.segment);
+            AVLNode b = state.rightNeighbour(e.segment);
+            addIntersection((Segment)a,e.segment);//se pasan los segmentos en orden
+            addIntersection(e.segment,(Segment)b);
         }
         else if(!e.isFirst && !e.isIntersection){//punto final del segmento
-            addIntersection(state.leftNeighbour(e.segment),e.segment);
-            addIntersection(e.segmentstate.rightNeighbour(e.segment));
+            AVLNode c = state.leftNeighbour(e.segment);
+            AVLNode d = state.rightNeighbour(e.segment);            
+            addIntersection((Segment)c,e.segment);
+            addIntersection(e.segment,(Segment)d);
             state.delete(e.segment);//se elimina segmento del arbol AVL
         }
         else if(e.isIntersection){
