@@ -29,33 +29,24 @@ public class Segment extends AVLNode<Segment> {
 
 	//Metodo que ayudara a saber si existe una interseccion entre 2 segmentos.
 	public boolean intersection(Segment s) {
-		return true;
+		return getIntersection(s)!=null;
 	}
 
 	//Metodo que regresa el punto de interseccion entre 2 Puntos.
 	public Punto getIntersection(Segment s) {
-        // Line AB represented as a1x + b1y = c1
-        double a1 = this.end.y - this.begin.y;
-        double b1 = this.begin.x - this.end.x;
-        double c1 = a1*(this.begin.x) + b1*(this.begin.y);
+        double determinant = (this.end.x-this.begin.x)*(s.end.y-s.begin.y) - (this.end.y-this.begin.y)*(s.end.x-s.begin.x);
 
-        // Line CD represented as a2x + b2y = c2
-        double a2 = s.end.y - s.begin.y;
-        double b2 = s.begin.x - s.end.x;
-        double c2 = a2*(s.begin.x) + b2*(s.begin.y);
-
-        double determinant = a1*b2 - a2*b1;
-
-        //if (determinant == 0){
-            // The lines are parallel. This is simplified
-            // by returning a pair of FLT_MAX
-            //return make_pair(FLT_MAX, FLT_MAX);
-        //}
-        //else{
-            double x = (b2*c1 - b1*c2)/determinant;
-            double y = (a1*c2 - a2*c1)/determinant;
-            return new Punto(x, y);
-        //}
+        if (determinant != 0){
+            double ss = ((this.begin.x-s.begin.x)*(s.end.y-s.begin.y) - (this.begin.y-s.begin.y)*(s.end.x-s.begin.x))/-determinant;
+            double tt = ((s.begin.x-this.begin.x)*(this.end.y-this.begin.y) - (s.begin.y-this.begin.y)*(this.end.x-this.begin.x))/determinant;
+            
+            if ( 0<=ss && ss<=1 && 0<=tt && tt<=1 ) {
+                double x = this.begin.x + ss*(this.end.x-this.begin.x);
+                double y = this.begin.y + ss*(this.end.y-this.begin.y);
+                return new Punto(x, y);
+            }
+        }
+            return null;
 	}
 
 	//Metodo que ayuda a la representacion visual del punto en terminal.

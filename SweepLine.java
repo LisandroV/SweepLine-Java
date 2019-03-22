@@ -29,8 +29,7 @@ public class SweepLine {
     }
 
     public static void eventHandler(Punto e){
-        e.segment.imprime();//para hacer pruebas
-        System.out.println();
+        if(!e.isIntersection) e.segment.imprime();
         if(e.isFirst && !e.isIntersection){
             state.insert(e.segment);//se agrega segmento al arbol AVL
             AVLNode a = state.leftNeighbour(e.segment);
